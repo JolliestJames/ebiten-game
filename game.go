@@ -2,11 +2,12 @@ package main
 
 import (
 	"embed"
-	"math"
 	"image"
 	_ "image/png"
+	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/colorm"
 )
 
 //go:embed assets/*
@@ -42,11 +43,16 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	halfW := float64(width/2)
 	halfH := float64(height/2)
 
-	op := &ebiten.DrawImageOptions{}
+	// op := &ebiten.DrawImageOptions{}
+	op := &colorm.DrawImageOptions{}
 	op.GeoM.Translate(-halfW, -halfH)
 	op.GeoM.Rotate(45.0 * math.Pi / 180.0)
 	op.GeoM.Translate(halfW, halfH)
-	screen.DrawImage(PlayerSprite, op)
+
+	cm := colorm.ColorM{}
+	cm.Scale(1.0, 1.0, 1.0, 0.5)
+	colorm.DrawImage(screen, PlayerSprite, cm, op)
+	// screen.DrawImage(PlayerSprite, op)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
