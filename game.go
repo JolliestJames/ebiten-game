@@ -41,7 +41,7 @@ type Game struct{
 }
 
 func (g *Game) Update() error {
-	speed := 5.0
+	speed := float64(300 / ebiten.TPS())
 	
 	g.playerPosition.X += speed
 
