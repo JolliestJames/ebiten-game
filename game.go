@@ -1,11 +1,13 @@
 package main
 
 import (
-	"time"
 	"embed"
+	"fmt"
 	"image"
 	_ "image/png"
 	"math"
+	"math/rand"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	// "github.com/hajimehoshi/ebiten/v2/colorm"
@@ -19,9 +21,10 @@ const (
 //go:embed assets/*
 var assets embed.FS
 
-var PlayerSprite = mustLoadimage("assets/player.png");
+var PlayerSprite = mustLoadImage("assets/player.png");
+var MeteorSprites = mustLoadImages("assets/meteors")
 
-func mustLoadimage(name string) *ebiten.Image {
+func mustLoadImage(name string) *ebiten.Image {
 	f, err := assets.Open(name)
 	if err != nil {
 		panic(err)
@@ -35,6 +38,57 @@ func mustLoadimage(name string) *ebiten.Image {
 	}
 
 	return ebiten.NewImageFromImage(image)
+}
+
+func mustLoadImages(name string) []*ebiten.Image {
+	d, err := assets.ReadDir(name)
+	if err != nil {
+		panic(err)
+	}
+
+	images := make([]*ebiten.Image, len(d))
+	for i := range d {
+		mustLoadImage(fmt.Sprintf("%s/%s", name, d[i].Name()))
+	}
+
+	return images
+}
+
+type Meteor struct {
+	position Vector
+	movement Vector
+	sprite *ebiten.Image
+}
+
+func NewMeteor() *Meteor {
+	sprite := MeteorSprites[rand.Intn(len(MeteorSprites))]
+
+	return &Meteor{
+		position: Vector{},
+		movement: Vector{},
+		sprite: sprite,
+	}
+}
+
+func (m *Meteor) Update() {
+	m.position.X += m.movement.X
+	m.position.Y += m.movement.Y
+}
+
+func (m *Meteor) Draw(screen *ebiten.Image) {
+	bounds := m.sprite.Bounds()
+
+	halfW := float64(bounds.Dx()) / 2
+	halfH := float64(bounds.Dy()) / 2
+
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(-halfW, -halfH)
+	// op.GeoM.Rotate(m.rotation)
+	op.GeoM.Translate(halfW, halfH)
+
+	op.GeoM.Translate(m.position.X, m.position.Y)
+
+	screen.DrawImage(m.sprite, op)
 }
 
 type Timer struct {
@@ -137,18 +191,23 @@ func (p *Player) Draw(screen *ebiten.Image) {
 
 type Game struct{
 	player *Player
-	moveTimer *Timer
+	meteorSpawnTimer *Timer
+	meteors []*Meteor
 }
 
 func (g *Game) Update() error {
 	g.player.Update()
 
-	g.moveTimer.Update()
+	g.meteorSpawnTimer.Update()
+	if g.meteorSpawnTimer.IsReady() {
+		g.meteorSpawnTimer.Reset()
 
-	if g.moveTimer.IsReady() {
-		g.moveTimer.Reset()
+		m := NewMeteor()
+		g.meteors = append(g.meteors, m)
+	}
 
-		g.player.position.X += 25
+	for _, m := range g.meteors {
+		m.Update()
 	}
 
 	return nil
@@ -156,6 +215,10 @@ func (g *Game) Update() error {
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	g.player.Draw(screen)
+
+	for _, m := range g.meteors {
+		m.Draw(screen)
+	}
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
@@ -163,7 +226,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 }
 
 func main() {
-	g := &Game{player: NewPlayer(), moveTimer: NewTimer(5 * time.Second)}
+	g := &Game{player: NewPlayer(), meteorSpawnTimer: NewTimer(5 * time.Second)}
 
 	err := ebiten.RunGame(g)
 	if err != nil {
