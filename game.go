@@ -43,7 +43,18 @@ type Game struct{
 func (g *Game) Update() error {
 	speed := float64(300 / ebiten.TPS())
 	
-	g.playerPosition.X += speed
+	if ebiten.IsKeyPressed(ebiten.KeyS) {
+		g.playerPosition.Y += speed
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyW) {
+		g.playerPosition.Y -= speed
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyD) {
+		g.playerPosition.X += speed
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyA) {
+		g.playerPosition.X -= speed
+	}
 
 	return nil
 }
