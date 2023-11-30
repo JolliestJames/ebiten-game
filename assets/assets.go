@@ -12,7 +12,8 @@ import (
 //go:embed *
 var assets embed.FS
 
-var PlayerSprite = mustLoadImage("player.png");
+var BulletSprite = mustLoadImage("missile.png")
+var PlayerSprite = mustLoadImage("player.png")
 var MeteorSprites = mustLoadImages("meteors")
 
 func mustLoadImage(name string) *ebiten.Image {
