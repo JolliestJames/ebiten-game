@@ -4,16 +4,16 @@ import (
 	"math"
 	"math/rand"
 
-	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/JolliestJames/ebiten-game/assets"
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 type Meteor struct {
-	position Vector
-	rotation float64
+	position      Vector
+	rotation      float64
 	rotationSpeed float64
-	movement Vector
-	sprite *ebiten.Image
+	movement      Vector
+	sprite        *ebiten.Image
 }
 
 func NewMeteor() *Meteor {
@@ -29,11 +29,11 @@ func NewMeteor() *Meteor {
 	angle := rand.Float64() * 2 * math.Pi
 
 	pos := Vector{
-		X: target.X + math.Cos(angle) * r,
-		Y: target.Y + math.Sin(angle) * r,
+		X: target.X + math.Cos(angle)*r,
+		Y: target.Y + math.Sin(angle)*r,
 	}
 
-	velocity := 0.25 + rand.Float64() * 1.5
+	velocity := 0.25 + rand.Float64()*1.5
 
 	direction := Vector{
 		X: target.X - pos.X,
@@ -48,11 +48,11 @@ func NewMeteor() *Meteor {
 	}
 
 	return &Meteor{
-		position: pos,
-		rotation: float64(0),
+		position:      pos,
+		rotation:      float64(0),
 		rotationSpeed: -0.02 + rand.Float64()*0.04,
-		movement: movement,
-		sprite: sprite,
+		movement:      movement,
+		sprite:        sprite,
 	}
 }
 

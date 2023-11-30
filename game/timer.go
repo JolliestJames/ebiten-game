@@ -8,13 +8,13 @@ import (
 
 type Timer struct {
 	currentTicks int
-	targetTicks int
+	targetTicks  int
 }
 
 func NewTimer(d time.Duration) *Timer {
 	return &Timer{
 		currentTicks: 0,
-		targetTicks: int(d.Milliseconds()) * ebiten.TPS() / 1000,
+		targetTicks:  int(d.Milliseconds()) * ebiten.TPS() / 1000,
 	}
 }
 

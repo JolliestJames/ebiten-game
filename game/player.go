@@ -1,15 +1,15 @@
 package game
 
 import (
-	"math"
-	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/JolliestJames/ebiten-game/assets"
+	"github.com/hajimehoshi/ebiten/v2"
+	"math"
 )
 
 type Player struct {
-	position Vector
-	rotation float64
-	sprite *ebiten.Image
+	position      Vector
+	rotation      float64
+	sprite        *ebiten.Image
 	shootCooldown Timer
 }
 
@@ -27,7 +27,7 @@ func NewPlayer() *Player {
 
 	return &Player{
 		position: pos,
-		sprite: sprite,
+		sprite:   sprite,
 		rotation: float64(0),
 	}
 }
@@ -42,7 +42,7 @@ func (p *Player) Update() {
 		p.rotation += speed
 	}
 
-	p.shootCooldown.Update() 
+	p.shootCooldown.Update()
 	if p.shootCooldown.IsReady() && ebiten.IsKeyPressed(ebiten.KeySpace) {
 		p.shootCooldown.Reset()
 	}
