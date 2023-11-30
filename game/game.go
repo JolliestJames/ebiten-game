@@ -15,13 +15,17 @@ type Game struct {
 	player           *Player
 	meteorSpawnTimer *Timer
 	meteors          []*Meteor
+	bullets          []*Bullet
 }
 
 func NewGame() *Game {
-	return &Game{
-		player: NewPlayer(),
+	g := &Game{
 		meteorSpawnTimer: NewTimer(5 * time.Second),
 	}
+
+	g.player = NewPlayer(g)
+
+	return g
 }
 
 func (g *Game) Update() error {
@@ -52,4 +56,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
 	return ScreenWidth, ScreenHeight
+}
+
+func (g *Game) AddBullet(b *Bullet) {
+	g.bullets = append(g.bullets, b)
 }
