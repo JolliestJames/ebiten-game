@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/JolliestJames/ebiten-game/game"
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 func main() {
