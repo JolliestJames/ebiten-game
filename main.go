@@ -168,6 +168,7 @@ type Player struct {
 	position Vector
 	rotation float64
 	sprite *ebiten.Image
+	shootCooldown Timer
 }
 
 func NewPlayer() *Player {
@@ -197,6 +198,11 @@ func (p *Player) Update() {
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyD) {
 		p.rotation += speed
+	}
+
+	p.shootCooldown.Update() 
+	if p.shootCooldown.IsReady() && ebiten.IsKeyPressed(ebiten.KeySpace) {
+		p.shootCooldown.Reset()
 	}
 
 	// speed := float64(300 / ebiten.TPS())
