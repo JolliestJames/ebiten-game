@@ -1,4 +1,4 @@
-module game
+module github.com/JolliestJames/ebiten-game
 
 go 1.21.4
 
