@@ -61,8 +61,8 @@ func mustLoadFont(name string) font.Face {
 	}
 
 	face, err := opentype.NewFace(tt, &opentype.FaceOptions{
-		Size: 48,
-		DPI: 72,
+		Size:    48,
+		DPI:     72,
 		Hinting: font.HintingVertical,
 	})
 	if err != nil {
@@ -70,4 +70,4 @@ func mustLoadFont(name string) font.Face {
 	}
 
 	return face
-} 
+}
