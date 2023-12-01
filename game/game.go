@@ -1,9 +1,13 @@
 package game
 
 import (
+	"fmt"
+	"image/color"
 	"time"
 
+	"github.com/JolliestJames/ebiten-game/assets"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/text"
 )
 
 const (
@@ -16,6 +20,7 @@ type Game struct {
 	meteorSpawnTimer *Timer
 	meteors          []*Meteor
 	bullets          []*Bullet
+	score            int
 }
 
 func NewGame() *Game {
@@ -73,6 +78,8 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	for _, b := range g.bullets {
 		b.Draw(screen)
 	}
+
+	text.Draw(screen, fmt.Sprintf("%06d", g.score), assets.ScoreFont, ScreenWidth/2-150, 50, color.White)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
