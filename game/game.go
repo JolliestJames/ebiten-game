@@ -51,6 +51,7 @@ func (g *Game) Update() error {
 			if m.Collider().Intersects(b.Collider()) {
 				g.meteors = append(g.meteors[:i], g.meteors[i+1:]...)
 				g.bullets = append(g.bullets[:j], g.bullets[j+1:]...)
+				g.score++
 			}
 		}
 	}
@@ -94,4 +95,5 @@ func (g *Game) Reset() {
 	g.player = NewPlayer(g)
 	g.meteors = nil
 	g.bullets = nil
+	g.score = 0
 }
