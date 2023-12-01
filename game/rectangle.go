@@ -1,17 +1,17 @@
 package game
 
 type Rectangle struct {
-	X float64
-	Y float64
-	Width float64
+	X      float64
+	Y      float64
+	Width  float64
 	Height float64
 }
 
 func NewRectangle(x, y, width, height float64) Rectangle {
 	return Rectangle{
-		X: x,
-		Y: y,
-		Width: width,
+		X:      x,
+		Y:      y,
+		Width:  width,
 		Height: height,
 	}
 }
