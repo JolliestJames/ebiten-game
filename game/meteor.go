@@ -77,3 +77,14 @@ func (m *Meteor) Draw(screen *ebiten.Image) {
 
 	screen.DrawImage(m.sprite, op)
 }
+
+func (m *Meteor) Collider() Rectangle {
+	bounds := m.sprite.Bounds()
+
+	return NewRectangle(
+		m.position.X,
+		m.position.Y,
+		float64(bounds.Dx()),
+		float64(bounds.Dy()),
+	)
+}

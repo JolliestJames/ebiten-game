@@ -100,3 +100,14 @@ func (p *Player) Draw(screen *ebiten.Image) {
 
 	screen.DrawImage(p.sprite, op)
 }
+
+func (p *Player) Collider() Rectangle {
+	bounds := p.sprite.Bounds()
+
+	return NewRectangle(
+		p.position.X,
+		p.position.Y,
+		float64(bounds.Dx()),
+		float64(bounds.Dy()),
+	)
+}
